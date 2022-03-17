@@ -2,20 +2,25 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-        
+     
 var x = Math.floor(Math.random() * ((canvas.width - 100) - 50)) + 50;
 var y = Math.floor(Math.random() * ((canvas.height - 100) - 50)) + 50;
 
 var dx = (Math.random() * (1 - (-1))) + (-1);
 var dy = (Math.random() * (1 - (-1))) + (-1);
 
-var ballRadius = 20;
+var ballRadius = Math.floor(Math.random() * (50 - 10)) + 10;
         
 var upPressed = false;
 var downPressed = false;
 
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
+
+window.addEventListener('resize', function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+})
 
 function keyDownHandler(e) {
     if(e.key == "Up" || e.key == "ArrowUp") {
@@ -39,7 +44,7 @@ function drawBall() {
     ctx.beginPath();
     // ctx.fillRect(x, y, 100, 100);
     ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "#fff";
     ctx.fill();
     ctx.closePath();
 }
@@ -68,10 +73,4 @@ function draw() {
     x += dx;
     y += dy;
 }
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-        draw(canvas)
-    })
     setInterval(draw, 10);
