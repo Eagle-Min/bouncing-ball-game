@@ -1,5 +1,5 @@
 class Ball {
-    constructor(canvas, ctx, x, y, dx, dy, ballRadius, upPress, downPress) {
+    constructor(canvas, ctx, x, y, dx, dy, ballRadius) {
         this.canvas     = canvas;
         this.ctx        = ctx;
         this.x          = x;
@@ -7,25 +7,29 @@ class Ball {
         this.dx         = dx;
         this.dy         = dy;
         this.ballRadius = ballRadius;
-        this.upPress    = upPress;
-        this.downPress  = downPress;
     }
 
     keyDownHandler(e) {
+        const upPressed = false; 
+        const downPressed = false;
+         
         if(e.key == "Up" || e.key == "ArrowUp") {
-            this.upPressed = true;
+            upPressed = true;
         }
         else if(e.key == "Down" || e.key == "ArrowDown") {
-            this.downPressed = true;
+            downPressed = true;
         }
     }
     
     keyUpHandler(e) {
+        const upPressed = false; 
+        const downPressed = false;
+
         if(e.key == "Up" || e.key == "ArrowUp") {
-            this.upPressed = false;
+            upPressed = false;
         }
         else if(e.key == "Down" || e.key == "ArrowDown") {
-            this.downPressed = false; 
+            downPressed = false; 
         }
     }
     
@@ -66,15 +70,13 @@ class Ball {
 }
 
 
-let ball = new Ball(document.getElementById("myCanvas"), 
+let ball = new Ball(document.getElementById("myCanvas"),
                     canvas.getContext("2d"), 
                     Math.floor(Math.random() * ((canvas.width - 100) - 50)) + 50, 
                     Math.floor(Math.random() * ((canvas.height - 100) - 50)) + 50, 
                     (Math.random() * (1 - (-1))) + (-1), 
                     (Math.random() * (1 - (-1))) + (-1), 
-                    Math.floor(Math.random() * (50 - 10)) + 10, 
-                    false, 
-                    false);
+                    Math.floor(Math.random() * (50 - 10)) + 10);
 
 
 canvas.width = window.innerWidth;
