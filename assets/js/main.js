@@ -9,7 +9,7 @@ var y = Math.floor(Math.random() * ((canvas.height - 100) - 50)) + 50;
 var dx = (Math.random() * (1 - (-1))) + (-1);
 var dy = (Math.random() * (1 - (-1))) + (-1);
 
-var ballRadius = Math.floor(Math.random() * (50 - 10)) + 10;
+var ballRadius = 10;
         
 var upPressed = false;
 var downPressed = false;
