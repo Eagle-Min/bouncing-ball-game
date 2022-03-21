@@ -1,3 +1,4 @@
+// Giá trị mặc định.
 const $ = document.querySelector.bind(document);
 const $width = window.innerWidth;
 const $height = window.innerHeight;
@@ -7,21 +8,24 @@ ball.width = $width;
 ball.height = $height;
 const ctx = ball.getContext("2d");
 
+// Resize windowns
 window.addEventListener("resize", (e) => {
   ball.width = window.innerWidth;
   ball.height = window.innerHeight;
 });
 
+// Class Ball
 class Ball {
   constructor(x, y, radius, sdx, sdy, color) {
-    this.x = x;
-    this.y = y;
-    this.radius = radius;
-    this.sdx = sdx;
-    this.sdy = sdy;
-    this.color = color;
+    this.x = x;                     // Tọa độ ban đầu theo trục x của ball.
+    this.y = y;                     // Tọa độ ban đầu theo trục y của ball.
+    this.radius = radius;           // Bán kính của ball.
+    this.sdx = sdx;                 // Tốc độ ban đầu theo trục x của ball.
+    this.sdy = sdy;                 // Tốc độ ban đầu theo trục y của ball.
+    this.color = color;             // Màu của bóng.
   }
 
+  // Vẽ ball
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -31,11 +35,13 @@ class Ball {
     this.move();
   }
 
+  // Di chuyển ball
   move() {
     this.x += this.sdx;
     this.y += this.sdy;
   }
 
+  // Check va chạm của ball với 4 hướng
   check() {
     if (this.x + this.radius > ball.width) {
       this.sdx = -this.sdx;
@@ -51,17 +57,20 @@ class Ball {
     }
   }
 
+  // Tăng tốc ball
   speedUp() {
     this.sdx *= 1.1;
     this.sdy *= 1.1;
   }
 
+  // Giảm tốc ball
   speedDown() {
     this.sdx /= 1.1;
     this.sdy /= 1.1;
   }
 }
-                
+   
+// Mảng chứa ball
 const ballArray = [];
 const makeBall = (balls) => {
     const radius = 30;
@@ -73,6 +82,7 @@ const makeBall = (balls) => {
     ballArray.push(new Ball(x, y, radius, sdx, sdy, color));
 };
 
+// Chuyển động ball
 const ballAnimation = () => {
   ctx.clearRect(0, 0, ball.width, ball.height);
   ballArray.forEach((ball) => {
@@ -80,16 +90,19 @@ const ballAnimation = () => {
     ball.check();
   });
 
-  requestAnimationFrame(ballAnimation);
+  requestAnimationFrame(ballAnimation);   // Bóng di chuyển mượt hơn so với setInterval.
 };
 
+// Bắt đầu
 const start = () => {
   makeBall();
   ballAnimation();
 };
 
+// Click tạo bóng.
 $("#btn").addEventListener("click", start);
 
+// Speed with keybroad
 document.addEventListener(
   "keydown",
   (event) => {
