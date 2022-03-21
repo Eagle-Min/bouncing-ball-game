@@ -94,7 +94,7 @@ document.addEventListener(
         oneBall.speedUp();
     }
     if (event.code === "ArrowDown") {
-        oneBball.speedDown();
+        oneBall.speedDown();
     }
   },
   false
