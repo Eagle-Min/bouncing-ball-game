@@ -1,76 +1,109 @@
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-     
-var x = Math.floor(Math.random() * ((canvas.width - 100) - 50)) + 50;
-var y = Math.floor(Math.random() * ((canvas.height - 100) - 50)) + 50;
+const $ = document.querySelector.bind(document);
+const $width = window.innerWidth;
+const $height = window.innerHeight;
 
-var dx = (Math.random() * (1 - (-1))) + (-1);
-var dy = (Math.random() * (1 - (-1))) + (-1);
+const ball = $(".canvas");
+ball.width = $width;
+ball.height = $height;
+const ctx = ball.getContext("2d");
 
-var ballRadius = 10;
-        
-var upPressed = false;
-var downPressed = false;
+window.addEventListener("resize", (e) => {
+  ball.width = window.innerWidth;
+  ball.height = window.innerHeight;
+});
 
-document.addEventListener("keydown", keyDownHandler);
-document.addEventListener("keyup", keyUpHandler);
+class Ball {
+  constructor(x, y, radius, sdx, sdy, color) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.sdx = sdx;
+    this.sdy = sdy;
+    this.color = color;
+  }
 
-window.addEventListener('resize', function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-})
-
-function keyDownHandler(e) {
-    if(e.key == "Up" || e.key == "ArrowUp") {
-        upPressed = true;
-    }
-    else if(e.key == "Down" || e.key == "ArrowDown") {
-        downPressed = true;
-    }
-}
-
-function keyUpHandler(e) {
-    if(e.key == "Up" || e.key == "ArrowUp") {
-        upPressed = false;
-    }
-    else if(e.key == "Down" || e.key == "ArrowDown") {
-        downPressed = false; 
-    }
-}
-
-function drawBall() {
+  draw() {
     ctx.beginPath();
-    // ctx.fillRect(x, y, 100, 100);
-    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-    ctx.fillStyle = "green";
-    ctx.fill();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctx.fillStyle = this.color;
     ctx.closePath();
+    ctx.fill();
+    this.move();
+  }
+
+  move() {
+    this.x += this.sdx;
+    this.y += this.sdy;
+  }
+
+  check() {
+    if (this.x + this.radius > ball.width) {
+      this.sdx = -this.sdx;
+    }
+    if (this.y + this.radius > ball.height) {
+      this.sdy = -this.sdy;
+    }
+    if (this.x - this.radius < 0) {
+      this.sdx = -this.sdx;
+    }
+    if (this.y - this.radius < 0) {
+      this.sdy = -this.sdy;
+    }
+  }
+
+  speedUp() {
+    this.sdx *= 1.1;
+    this.sdy *= 1.1;
+  }
+
+  speedDown() {
+    this.sdx /= 1.1;
+    this.sdy /= 1.1;
+  }
 }
+                
+const ballArray = [];
+const makeBall = (balls) => {
+    const radius = 30;
+    const x = Math.floor(Math.random() * ((ball.width - 100) - 50)) + 50;
+    const y = Math.floor(Math.random() * ((ball.height - 100) - 50)) + 50;
+    const sdx = (Math.random() * (1 - (-1))) + (-1);
+    const sdy = (Math.random() * (1 - (-1))) + (-1);
+    const color = `white`;
+    ballArray.push(new Ball(x, y, radius, sdx, sdy, color));
+};
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBall();
+const ballAnimation = () => {
+  ctx.clearRect(0, 0, ball.width, ball.height);
+  ballArray.forEach((ball) => {
+    ball.draw();
+    ball.check();
+  });
 
-    if(x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-        dx = -dx;
+  requestAnimationFrame(ballAnimation);
+};
+
+// Start Game
+const start = () => {
+  makeBall();
+  ballAnimation();
+};
+
+$("#btn").addEventListener("click", start);
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+    if (event.code === "ArrowUp") {
+      ballArray.forEach((ball) => {
+        ball.speedUp();
+      });
     }
-
-    if(y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-        dy = -dy;
+    if (event.code === "ArrowDown") {
+      ballArray.forEach((ball) => {
+        ball.speedDown();
+      });
     }
-
-    if(upPressed) {
-        dx *= 1.02;
-        dy *= 1.02;
-    }
-    else if(downPressed) {
-        dx /= 1.02;
-        dy /= 1.02;
-    }
-
-    x += dx;
-    y += dy;
-}
-    setInterval(draw, 10);
+  },
+  false
+);
