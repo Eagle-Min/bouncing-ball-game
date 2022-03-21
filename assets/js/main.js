@@ -70,7 +70,7 @@ class Ball {
   }
 }
    
-// Tru
+// Truyền giá trị cho ball
 const oneBall = new Ball(Math.floor(Math.random() * ((ball.width - 100) - 50)) + 50,
                          Math.floor(Math.random() * ((ball.height - 100) - 50)) + 50,
                          15,
