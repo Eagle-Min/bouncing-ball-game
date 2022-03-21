@@ -83,7 +83,6 @@ const ballAnimation = () => {
   requestAnimationFrame(ballAnimation);
 };
 
-// Start Game
 const start = () => {
   makeBall();
   ballAnimation();
