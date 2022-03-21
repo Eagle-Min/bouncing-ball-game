@@ -71,50 +71,30 @@ class Ball {
 }
    
 // Mảng chứa ball
-const ballArray = [];
-const makeBall = (balls) => {
-    const radius = 30;
-    const x = Math.floor(Math.random() * ((ball.width - 100) - 50)) + 50;
-    const y = Math.floor(Math.random() * ((ball.height - 100) - 50)) + 50;
-    const sdx = (Math.random() * (1 - (-1))) + (-1);
-    const sdy = (Math.random() * (1 - (-1))) + (-1);
-    const color = `white`;
-    ballArray.push(new Ball(x, y, radius, sdx, sdy, color));
-};
+const oneBall = new Ball(Math.floor(Math.random() * ((ball.width - 100) - 50)) + 50,
+                         Math.floor(Math.random() * ((ball.height - 100) - 50)) + 50,
+                         15,
+                         (Math.random() * (1 - (-1))) + (-1),
+                         (Math.random() * (1 - (-1))) + (-1),
+                         'white');
 
 // Chuyển động ball
 const ballAnimation = () => {
   ctx.clearRect(0, 0, ball.width, ball.height);
-  ballArray.forEach((ball) => {
-    ball.draw();
-    ball.check();
-  });
-
-  requestAnimationFrame(ballAnimation);   // Bóng di chuyển mượt hơn so với setInterval.
+  oneBall.draw();
+  oneBall.check();
 };
-
-// Bắt đầu
-const start = () => {
-  makeBall();
-  ballAnimation();
-};
-
-// Click tạo bóng.
-$("#btn").addEventListener("click", start);
+setInterval(ballAnimation, 30);
 
 // Speed with keybroad
 document.addEventListener(
   "keydown",
   (event) => {
     if (event.code === "ArrowUp") {
-      ballArray.forEach((ball) => {
-        ball.speedUp();
-      });
+        oneBall.speedUp();
     }
     if (event.code === "ArrowDown") {
-      ballArray.forEach((ball) => {
-        ball.speedDown();
-      });
+        oneBball.speedDown();
     }
   },
   false
