@@ -1,4 +1,4 @@
-// Default value
+/** Default value */
 const $ = document.querySelector.bind(document);
 const $width = window.innerWidth;
 const $height = window.innerHeight;
@@ -8,10 +8,11 @@ ball.width = $width;
 ball.height = $height;
 const ctx = ball.getContext("2d");
 
-// Resize window
+/** Resize window */
 window.addEventListener("resize", () => {
   ball.width = window.innerWidth;
   ball.height = window.innerHeight;
+
   oneBall = new Ball(Math.floor(Math.random() * ((ball.width - 100) - 50)) + 50, 
                       Math.floor(Math.random() * ((ball.height - 100) - 50)) + 50,
                       15, 
@@ -20,18 +21,27 @@ window.addEventListener("resize", () => {
                       'white');
 });
 
-// Class Ball
+/** create ball class */
 class Ball {
-  constructor(x, y, radius, sdx, sdy, color) {
+
+  /**
+   * @param {*} x : initial coordinates of the ball in the x.
+   * @param {*} y : initial coordinates of the ball in the y.
+   * @param {*} radius : radius of the ball.
+   * @param {*} dx : initial speed of the ball in the x-direction.
+   * @param {*} dy : initial speed of the ball in the y-direction.
+   * @param {*} color : color of the ball.
+   */
+  constructor(x, y, radius, dx, dy, color) {
     this.x = x;
     this.y = y;
     this.radius = radius;
-    this.sdx = sdx;
-    this.sdy = sdy;
+    this.dx = dx;
+    this.dy = dy;
     this.color = color;
   }
 
-  // Draw ball
+  /** Draw ball */
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -41,42 +51,50 @@ class Ball {
     this.move();
   }
 
-  // Move ball
+  /** Move ball */
   move() {
-    this.x += this.sdx;
-    this.y += this.sdy;
+    this.x += this.dx;
+    this.y += this.dy;
   }
 
-  // Check
-  check() {
+  /** Check the ball's collision with the screen edges */
+  checkCollision() {
+
+    /** Right collision */
     if (this.x + this.radius > ball.width) {
-      this.sdx = -this.sdx;
+      this.dx = -this.dx;
     }
+
+    /** Bottom collision */
     if (this.y + this.radius > ball.height) { 
-      this.sdy = -this.sdy;
+      this.dy = -this.dy;
     }
+
+    /** Left collision */
     if (this.x - this.radius < 0) {
-      this.sdx = -this.sdx;
+      this.dx = -this.dx;
     }
+
+    /** Top collision */
     if (this.y - this.radius < 0) {
-      this.sdy = -this.sdy;
+      this.dy = -this.dy;
     }
   }
 
-  // Speed up
+  /** Speed up */
   speedUp() {
-    this.sdx *= 1.1;
-    this.sdy *= 1.1;
+    this.dx *= 1.1;
+    this.dy *= 1.1;
   }
 
-  // Speed down
+  /** Speed down */
   speedDown() {
-    this.sdx /= 1.1;
-    this.sdy /= 1.1;
+    this.dx /= 1.1;
+    this.dy /= 1.1;
   }
 }
        
-// The value of ball
+/** Create value for the ball */
 var oneBall = new Ball( Math.floor(Math.random() * ((ball.width - 100) - 50)) + 50,
                         Math.floor(Math.random() * ((ball.height - 100) - 50)) + 50,
                         15,
@@ -84,22 +102,24 @@ var oneBall = new Ball( Math.floor(Math.random() * ((ball.width - 100) - 50)) + 
                         (Math.random() * (1 - (-1))) + (-1),
                         'white');
 
-// Ball motion
+/** Motion for the ball */
 const ballAnimation = () => {
   ctx.clearRect(0, 0, ball.width, ball.height);
   oneBall.draw();
-  oneBall.check();
-
+  oneBall.checkCollision();
 };
 setInterval(ballAnimation, 20);
 
-// Speed with keyboard
+/* Speed with keyboard */
 document.addEventListener(
   "keydown",
   (event) => {
+    /** Accelerate with up arrow key */
     if (event.code === "ArrowUp") {
       oneBall.speedUp();
     }
+
+    /** Decelerate with the down arrow key */
     if (event.code === "ArrowDown") {
       oneBall.speedDown();
     }
